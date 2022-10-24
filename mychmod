@@ -1,0 +1,6 @@
+#! /usr/bin/bash
+for dir in $HOME/* ;
+do 
+    sudo chmod +x $dir ;
+done
+

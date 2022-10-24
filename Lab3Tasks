@@ -1,0 +1,254 @@
+#! /usr/bin/bash
+
+#this command is to allow the regEx
+shopt -s extglob
+#<--------Task1--------------->
+read -p "enter the Character:  " text1
+
+case $text1 in
+    @([A-Z]) )
+        echo "this is upper case"
+;;
+    @([a-z]) )
+        echo "this is lower case"
+;;
+    @([1-9]) )
+        echo "this is a number"
+;;  
+   !([A-za-z1-9]) )
+        echo "envaiid syntax"
+;;
+esac 
+#<-------------------------------------->
+#<--------Task2--------------->
+
+case $text1 in 
++([A-Z]) )
+echo "this is upper case"
+;;
++([a-z]) )
+echo "this is lower case"
+;;
++([1-9]) )
+echo "this is numer "
+;;
++([A-Za-z1-9]) )
+echo "this is mixed"
+;;
+!([A-Za-z1-9]) )
+echo "this is not readable"
+;;
+esac 
+#<-------------------------------------->
+#$$$$$$ Task1 + Task2 $$$$$$$
+select choice1 in char string
+do
+    case $choice1 in 
+        "char" )
+            read -p "enter the char:  " text
+            case $text in
+                @([A-Z]) )
+                    echo "this is upper case"
+            ;;
+                @([a-z]) )
+                    echo "this is lower case"
+            ;;
+                @([1-9]) )
+                    echo "this is a number"
+            ;;  
+            !([A-za-z1-9]) )
+                    echo "envaiid syntax"
+            ;;
+            esac
+    ;; 
+        "string")
+            read -p "enter the word:  " text
+            case $text in 
+            +([A-Z]) )
+            echo "this is upper case"
+            ;;
+            +([a-z]) )
+            echo "this is lower case"
+            ;;
+            +([1-9]) )
+            echo "this is numer "
+            ;;
+            +([A-Za-z1-9]) )
+            echo "this is mixed"
+            ;;
+            !([A-Za-z1-9]) )
+            echo "this is not readable"
+            ;;
+            esac
+    ;;
+    esac
+done
+
+#<-------------------------------------->
+#<--------Task3--------------->
+
+#! /usr/bin/bash
+for dir in $HOME/* ;
+do 
+    sudo chmod +x $dir ;
+done
+
+#<-------------------------------------->
+#<--------Task4--------------->
+
+#! /usr/bin/bash
+select choice1 in backup restore_backup
+do
+    case $choise1 in
+        "backup")
+            zip -r -v /$HOME/myfile.zip.bak /$HOME
+    ;;
+        "restore_backup")
+            read -p "Enter backup path: " res_backup
+            mkdir /$HOME/restored_backup
+            cp $res_backup backup.zip
+            unzip /$HOME/restored_backup/backup.zip /$HOME/restored_backup
+    ;;
+    esac
+done
+
+#<-------------------------------------->
+#<--------Task4 Enhanced--------------->
+#! /usr/bin/bash
+select choice1 in backup_data restore_backup
+do
+    case $choise1 in
+        "backup_data")
+           if [ -d /$HOME/backup ]; then
+                mkdir /$HOME/backup_new
+                for file in $HOME;
+                do
+                    if [ -f $file ] then 
+                        cp $file /$HOME/backup_new
+                    fi 
+                done
+                zip -mu /$HOME/backup.zip.bak /$HOME/backup_new
+            else
+                mkdir /$HOME/backup
+                
+                for file in $HOME;
+                do
+                    if [ -f $file ] then 
+                        cp $file /$HOME/backup
+                    fi 
+                done
+                zip -mu /$HOME/backup.zip.bak /$HOME/backup
+            fi
+    ;;
+        "restore_backup")
+            read -p "Enter backup path: " res_backup
+            if [ -f res_backup ]; then
+                mkdir /$HOME/restored_backup
+                cp $res_backup backup.zip
+                unzip  /$HOME/restored_backup/backup.zip
+            else 
+                echo "wrong backup file"
+            fi
+    ;;
+    esac
+done
+
+#<-------------------------------------->
+#<--------Task 5--------------->
+
+#! /usr/bin/bash
+
+read -p "Enter email subject:  " mail_subject
+
+
+#writing the mail body in mtemplate
+vim /tmp/mtemplate
+mail_body=$(cat /tmp/mtemplate)
+
+users=$(cut -d: -f1 /etc/passwd)
+
+#sending mail 
+for l_user in $users 
+do
+    mutt -s "$mail_subject" $l_user <<< "$mail_body"
+    echo "mail sent to $l_user"
+done
+
+#<-------------------------------------->
+#<--------Task 6--------------->
+
+#! /usr/bin/bash
+
+old_msg=$(grep "Message-Id" /var/mail/ahmed |wc -l)
+
+while [ true ]
+do
+    new_msg=$(grep "Message-Id" /var/mail/ahmed |wc -l)
+    if [[ $new_msg -gt $old_msg ]];then
+        num_mails=$(($new_msg-$old_msg))
+        echo "you have $num_mails new mail in /var/mail/ahmed"
+    else
+        echo "you have no new messges"
+    fi
+    $old_msg=$new_msg
+    sleep 10
+done
+
+#<-------------------------------------->
+#<--------Task 8--------------->
+
+
+select choice  in ls ls-a exit
+do 
+case $choice in
+ls)
+    ls
+;;
+ls-a)
+    ls -a
+;;
+exit)
+    break
+;;
+esac
+done
+
+#<-------------------------------------->
+#<--------Task 9--------------->
+
+#! /usr/bin/bash
+
+read -p "how many elements you will enter:  " arr_element
+
+for ((i=0 ; i < $arr_element; i++));
+do
+    read -p "Enter element: " elements
+    arra+=($elements)
+done
+
+echo ${arra[@]}
+
+#<-------------------------------------->
+#<--------Task 10--------------->
+
+#! /usr/bin/bash 
+
+read -p "Enter Array : " -a x
+for item in ${x[@]}
+do
+    typeset sum
+    (( sum = $item + sum ))
+done
+(( avg = $sum / ${#x[@]} ))
+echo "the average = " $avg
+
+#<-------------------------------------->
+#<--------Task 11--------------->
+function square () {
+    (( sq = $1 * $1 ))
+    return $sq
+}
+echo "the sum is"
+square 3
+echo $?
+echo $sq

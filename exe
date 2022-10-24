@@ -1,0 +1,3 @@
+#! /usr/bin/bash
+read file
+sudo chmod +x $file
